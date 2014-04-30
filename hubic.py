@@ -110,6 +110,13 @@ class Hubic:
     def upload_object(self,name,data):
         return self._os_call('put','default'+self.prefix_destination +name,data);
 
+    def create_manifest_big_file(self,manifest_link,name):
+        headers = { 'X-Object-Manifest': 'default_segments/' + manifest_link}
+        return self._os_call('put','default'+self.prefix_destination +name,data=None,headers=headers);
+
+    def upload_segment_big_file(self,manifest_link,number,content):
+        return self._os_call('put','default_segments/'+manifest_link + '/' + number,data=content);
+
     def delete_object(self,name):
         return self._os_call('delete','default'+name);
 

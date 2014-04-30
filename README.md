@@ -28,9 +28,3 @@ And after, you can launch script with
 
 This script will open a connection on your Ubuntu One and after on your hubiC account. To open a hubiC connection, you had to login in webpage printed by script. You will get a code, and after copy it inside your console, copy of all files begin.
 
-# Todo
-
-This script has two limitations : 
- * Usage of python-oauth require to use urllib2 to communicate with Ubuntu One and I didn't found how to stream response to reduce memory consumption. So, if you try to migrate a file of 2Gb, you will have 2gb taken by script in ram.
- * hubiC segmente big files (> 100 Mb) and this script does not (yet).
-

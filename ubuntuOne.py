@@ -1,12 +1,10 @@
 import json
 import oauth2
 import requests
-import urllib
-
+from oauth2 import Request as Requ, SignatureMethod_HMAC_SHA1
 
 class BadRequest(Exception):
     """An invalid request was submitted."""
-
 
 class Unauthorized(Exception):
     """The provided email address and password were incorrect."""
@@ -49,3 +47,17 @@ class UbuntuOne:
         request_token_url = "https://files.one.ubuntu.com" +  content_path.replace(' ','%20') 
         resp,content = self.client.request(request_token_url, "GET")
         return content
+
+    def get_stream_file(self,content_path):
+        url = "https://files.one.ubuntu.com" +  content_path.replace(' ','%20')
+
+        # Get Oauth1 signature
+        req = Requ.from_consumer_and_token(self.consumer,
+            token=self.token, http_method='GET', http_url=url,
+            parameters=None, body='')
+
+        req.sign_request(SignatureMethod_HMAC_SHA1(), self.consumer, self.token)
+        realm = "https://files.one.ubuntu.com"
+        header = req.to_header(realm=realm)
+
+        return requests.get(url, stream=True, headers=header)
